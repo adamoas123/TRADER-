@@ -251,17 +251,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <!-- Input Section -->
                 <div class="space-y-3">
-                    <!-- Scenario Management -->
-                    <div class="p-2 rounded-lg bg-white/5 space-y-2">
-                        <label class="block text-xs font-medium text-neutral-300">Scenarios</label>
-                        <div class="flex gap-2">
-                            <select id="load-scenario-select" class="w-full p-2 rounded-md form-input text-xs">
-                                <option value="">Load a scenario...</option>
-                            </select>
-                            <button id="delete-scenario-btn" class="p-2 rounded-md scenario-btn text-xs">Delete</button>
-                        </div>
-                        <button id="save-scenario-btn" class="w-full p-2 rounded-md scenario-btn text-xs">Save Current as Scenario</button>
-                    </div>
+                    <!-- REMOVED: Scenario Management Section -->
 
                     <div>
                         <label class="block text-xs font-medium text-neutral-300 mb-1">Trade Direction</label>
@@ -394,9 +384,10 @@
             const visualTradeBarContainer = document.getElementById('visual-trade-bar-container');
             const visualTradeBar = document.getElementById('visual-trade-bar');
 
-            const saveScenarioBtn = document.getElementById('save-scenario-btn');
-            const loadScenarioSelect = document.getElementById('load-scenario-select');
-            const deleteScenarioBtn = document.getElementById('delete-scenario-btn');
+            // REMOVED: Scenario Management DOM elements
+            // const saveScenarioBtn = document.getElementById('save-scenario-btn');
+            // const loadScenarioSelect = document.getElementById('load-scenario-select');
+            // const deleteScenarioBtn = document.getElementById('delete-scenario-btn');
 
             // Chart elements
             const priceChartContainer = document.getElementById('price-chart-container');
@@ -421,15 +412,18 @@
             editRiskBtn.addEventListener('click', enableRiskEditing);
             editableRiskAmountInput.addEventListener('input', handleRiskAmountChange);
             document.querySelectorAll('.copy-btn').forEach(btn => btn.addEventListener('click', handleCopyClick));
-            saveScenarioBtn.addEventListener('click', saveScenario);
-            loadScenarioSelect.addEventListener('change', loadSelectedScenario);
-            deleteScenarioBtn.addEventListener('click', deleteSelectedScenario);
+            
+            // REMOVED: Scenario Management Event Listeners
+            // saveScenarioBtn.addEventListener('click', saveScenario);
+            // loadScenarioSelect.addEventListener('change', loadSelectedScenario);
+            // deleteScenarioBtn.addEventListener('click', deleteSelectedScenario);
             
             // Adjust canvas size on window resize
             window.addEventListener('resize', resizeCanvas);
 
             // --- Initial Setup ---
-            loadScenariosIntoSelect();
+            // REMOVED: Initial scenario load
+            // loadScenariosIntoSelect();
             resizeCanvas(); // Set initial canvas size
 
             // --- Modal Functions ---
@@ -787,72 +781,72 @@
                     .forEach(card => card.classList.add('hidden'));
             }
 
-            // --- LocalStorage Scenario Functions ---
-            async function saveScenario() {
-                const scenarioName = await showModal("Enter a name for this scenario:", 'prompt', 'Scenario Name');
-                if (!scenarioName) {
-                    await showModal("Scenario save cancelled.", 'alert');
-                    return;
-                }
+            // REMOVED: LocalStorage Scenario Functions
+            // async function saveScenario() {
+            //     const scenarioName = await showModal("Enter a name for this scenario:", 'prompt', 'Scenario Name');
+            //     if (!scenarioName) {
+            //         await showModal("Scenario save cancelled.", 'alert');
+            //         return;
+            //     }
 
-                const scenarios = JSON.parse(localStorage.getItem('forexCalcScenarios') || '{}');
-                scenarios[scenarioName] = {
-                    currencyPair: currencyPairInput.value,
-                    entryPrice: entryPriceInput.value,
-                    accountSize: accountSizeInput.value,
-                    riskPercent: riskPercentInput.value,
-                    rrRatio: rrRatioInput.value,
-                    stopLossPips: stopLossPipsInput.value,
-                    tradeDirection: tradeDirection
-                };
-                localStorage.setItem('forexCalcScenarios', JSON.stringify(scenarios));
-                loadScenariosIntoSelect();
-                await showModal(`Scenario "${scenarioName}" saved!`, 'alert');
-            }
+            //     const scenarios = JSON.parse(localStorage.getItem('forexCalcScenarios') || '{}');
+            //     scenarios[scenarioName] = {
+            //         currencyPair: currencyPairInput.value,
+            //         entryPrice: entryPriceInput.value,
+            //         accountSize: accountSizeInput.value,
+            //         riskPercent: riskPercentInput.value,
+            //         rrRatio: rrRatioInput.value,
+            //         stopLossPips: stopLossPipsInput.value,
+            //         tradeDirection: tradeDirection
+            //     };
+            //     localStorage.setItem('forexCalcScenarios', JSON.stringify(scenarios));
+            //     loadScenariosIntoSelect();
+            //     await showModal(`Scenario "${scenarioName}" saved!`, 'alert');
+            // }
 
-            function loadScenariosIntoSelect() {
-                const scenarios = JSON.parse(localStorage.getItem('forexCalcScenarios') || '{}');
-                loadScenarioSelect.innerHTML = '<option value="">Load a scenario...</option>';
-                for (const name in scenarios) {
-                    const option = document.createElement('option');
-                    option.value = name;
-                    option.textContent = name;
-                    loadScenarioSelect.appendChild(option);
-                }
-            }
+            // function loadScenariosIntoSelect() {
+            //     const scenarios = JSON.parse(localStorage.getItem('forexCalcScenarios') || '{}');
+            //     loadScenarioSelect.innerHTML = '<option value="">Load a scenario...</option>';
+            //     for (const name in scenarios) {
+            //         const option = document.createElement('option');
+            //         option.value = name;
+            //         option.textContent = name;
+            //         loadScenarioSelect.appendChild(option);
+            //     }
+            // }
 
-            function loadSelectedScenario() {
-                const scenarioName = loadScenarioSelect.value;
-                if (!scenarioName) return;
+            // function loadSelectedScenario() {
+            //     const scenarioName = loadScenarioSelect.value;
+            //     if (!scenarioName) return;
 
-                const scenarios = JSON.parse(localStorage.getItem('forexCalcScenarios') || '{}');
-                const data = scenarios[scenarioName];
-                if (data) {
-                    currencyPairInput.value = data.currencyPair || '';
-                    entryPriceInput.value = data.entryPrice || '';
-                    accountSizeInput.value = data.accountSize || '';
-                    riskPercentInput.value = data.riskPercent || '1';
-                    rrRatioInput.value = data.rrRatio || '3';
-                    stopLossPipsInput.value = data.stopLossPips || '';
-                    setTradeDirection(data.tradeDirection || 'buy');
-                }
-            }
+            //     const scenarios = JSON.parse(localStorage.getItem('forexCalcScenarios') || '{}');
+            //     const data = scenarios[scenarioName];
+            //     if (data) {
+            //         currencyPairInput.value = data.currencyPair || '';
+            //         entryPriceInput.value = data.entryPrice || '';
+            //         accountSizeInput.value = data.accountSize || '';
+            //         riskPercentInput.value = data.riskPercent || '1';
+            //         rrRatioInput.value = data.rrRatio || '3';
+            //         stopLossPipsInput.value = data.stopLossPips || '';
+            //         setTradeDirection(data.tradeDirection || 'buy');
+            //     }
+            // }
 
-            async function deleteSelectedScenario() {
-                const scenarioName = loadScenarioSelect.value;
-                if (!scenarioName) {
-                    await showModal('Please select a scenario to delete.', 'alert');
-                    return;
-                }
-                const confirmed = await showModal(`Are you sure you want to delete the "${scenarioName}" scenario?`, 'confirm');
-                if (confirmed) {
-                    const scenarios = JSON.parse(localStorage.getItem('forexCalcScenarios') || '{}');
-                    delete scenarios[scenarioName];
-                    localStorage.setItem('forexCalcScenarios', JSON.stringify(scenarios));
-                    loadScenariosIntoSelect();
-                    await showModal(`Scenario "${scenarioName}" deleted.`, 'alert');
-                }
-            }
+            // async function deleteSelectedScenario() {
+            //     const scenarioName = loadScenarioSelect.value;
+            //     if (!scenarioName) {
+            //         await showModal('Please select a scenario to delete.', 'alert');
+            //         return;
+            //     }
+            //     const confirmed = await showModal(`Are you sure you want to delete the "${scenarioName}" scenario?`, 'confirm');
+            //     if (confirmed) {
+            //         const scenarios = JSON.parse(localStorage.getItem('forexCalcScenarios') || '{}');
+            //         delete scenarios[scenarioName];
+            //         localStorage.setItem('forexCalcScenarios', JSON.stringify(scenarios));
+            //         loadScenariosIntoSelect();
+            //         await showModal(`Scenario "${scenarioName}" deleted.`, 'alert');
+            //     }
+            // }
         });
     </script>
 </body>
