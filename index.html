@@ -11,6 +11,14 @@
             font-family: 'Inter', sans-serif;
             background-color: #0a0a0a;
             color: #e5e5e5;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            box-sizing: border-box;
+            overflow-y: auto; /* Allow vertical scrolling if content overflows */
+            overflow-x: hidden; /* Prevent horizontal scrolling */
         }
         .container-glow {
             position: relative;
@@ -20,12 +28,15 @@
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             z-index: 1;
+            max-width: 700px;
+            padding: 1.5rem;
+            margin: auto;
+            box-sizing: border-box;
         }
         .container-glow::before {
             content: '';
             position: absolute;
             top: -2px; left: -2px; right: -2px; bottom: -2px;
-            /* UPDATED: Softer, more eye-friendly gradient */
             background: linear-gradient(135deg, #4338ca, #14b8a6);
             z-index: -1;
             filter: blur(15px);
@@ -39,16 +50,20 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: #e5e5e5;
             transition: all 0.3s ease;
+            padding: 0.65rem;
+            font-size: 0.9rem;
         }
         .form-input:focus {
             background-color: rgba(255, 255, 255, 0.1);
-            border-color: #14b8a6; /* Match new gradient */
-            box-shadow: 0 0 15px rgba(20, 184, 166, 0.3); /* Match new gradient */
+            border-color: #14b8a6;
+            box-shadow: 0 0 15px rgba(20, 184, 166, 0.3);
         }
         .btn-glow {
-            background: linear-gradient(135deg, #4338ca, #14b8a6); /* Match new gradient */
+            background: linear-gradient(135deg, #4338ca, #14b8a6);
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(20, 184, 166, 0.2);
+            padding: 0.65rem;
+            font-size: 0.9rem;
         }
         .btn-glow:hover {
             transform: translateY(-2px);
@@ -58,14 +73,16 @@
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s ease;
+            padding: 1rem;
         }
         .buy-sell-toggle {
             display: flex; border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 0.5rem; overflow: hidden;
         }
         .buy-sell-toggle button {
-            flex: 1; padding: 0.75rem; border: none; background: transparent;
+            flex: 1; padding: 0.65rem; border: none; background: transparent;
             color: #a0a0a0; cursor: pointer; transition: all 0.3s ease;
+            font-size: 0.9rem;
         }
         .buy-sell-toggle button.active { color: #ffffff; font-weight: 600; }
         .buy-sell-toggle .slider {
@@ -75,56 +92,179 @@
         }
         .buy-sell-toggle .slider.buy { left: 0; background: linear-gradient(135deg, #00b09b, #96c93d); }
         .buy-sell-toggle .slider.sell { left: 50%; background: linear-gradient(135deg, #ff416c, #ff4b2b); }
-        .error-message { color: #ff4b2b; font-size: 0.875rem; height: 1.25rem; transition: all 0.3s ease; }
+        .error-message { color: #ff4b2b; font-size: 0.8rem; height: 1.25rem; transition: all 0.3s ease; }
         .editable-risk-input {
-            background: transparent; border: none; font-size: 1.5rem; line-height: 2rem;
+            background: transparent; border: none; font-size: 1.25rem; line-height: 1.75rem;
             font-weight: 700; color: #facc15; width: 100%; padding: 0;
         }
         .editable-risk-input:disabled { background: transparent; }
         .editable-risk-input:focus { outline: none; border-bottom: 2px solid #14b8a6; }
         .edit-btn, .copy-btn {
             background-color: rgba(255, 255, 255, 0.1); color: #a0a0a0;
-            border: none; padding: 0.25rem 0.75rem; border-radius: 0.375rem;
-            font-size: 0.75rem; transition: all 0.2s ease;
+            border: none; padding: 0.2rem 0.6rem; border-radius: 0.375rem;
+            font-size: 0.7rem; transition: all 0.2s ease;
         }
         .edit-btn:hover, .copy-btn:hover { background-color: rgba(255, 255, 255, 0.2); color: #e5e5e5; }
-        .copy-btn { padding: 0.5rem; }
-        .visual-trade-bar { display: flex; width: 100%; height: 1.5rem; border-radius: 0.5rem; overflow: hidden; background-color: rgba(255,255,255,0.1); }
+        .copy-btn { padding: 0.4rem; }
+        .visual-trade-bar { display: flex; width: 100%; height: 1.2rem; border-radius: 0.5rem; overflow: hidden; background-color: rgba(255,255,255,0.1); }
         .visual-bar-risk { background-color: #ff4b2b; }
         .visual-bar-reward { background-color: #00b09b; }
         .scenario-btn {
             background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
             color: #a0a0a0; transition: all 0.2s ease;
+            padding: 0.65rem;
+            font-size: 0.9rem;
         }
         .scenario-btn:hover { background-color: rgba(255, 255, 255, 0.1); color: #e5e5e5; }
 
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.75);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background-color: #1a1a1a;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+        .modal-overlay.show .modal-content {
+            transform: translateY(0);
+        }
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .modal-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        .modal-btn.primary {
+            background: linear-gradient(135deg, #4338ca, #14b8a6);
+            color: white;
+        }
+        .modal-btn.primary:hover {
+            opacity: 0.9;
+        }
+        .modal-btn.secondary {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #e5e5e5;
+        }
+        .modal-btn.secondary:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        .modal-input {
+            width: 100%;
+            padding: 0.75rem;
+            margin-top: 1rem;
+            border-radius: 0.5rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #e5e5e5;
+        }
+
+        /* Specific styling for select options */
+        #load-scenario-select option {
+            background-color: #1a1a1a;
+            color: #e5e5e5;
+        }
+        #load-scenario-select option:checked {
+            background-color: #14b8a6;
+            color: white;
+        }
+        #load-scenario-select option:hover {
+            background-color: #0d9488;
+            color: white;
+        }
+
+        /* Chart specific styles */
+        #price-chart-canvas {
+            background-color: rgba(255, 255, 255, 0.03);
+            border-radius: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+            height: 200px; /* Fixed height for the chart */
+        }
+
+        /* Responsive adjustments for smaller screens */
+        @media (max-width: 640px) {
+            .container-glow {
+                padding: 1rem; /* Even less padding on very small screens */
+            }
+            .text-2xl { font-size: 1.5rem; } /* Adjust title size */
+            .text-sm { font-size: 0.75rem; } /* Adjust subtitle size */
+            .space-y-3 > div { margin-bottom: 0.75rem !important; } /* Reduce vertical spacing */
+            .grid-cols-2 { gap: 0.75rem; } /* Reduce gap in grid */
+            .form-input, .btn-glow, .scenario-btn, .buy-sell-toggle button {
+                padding: 0.5rem;
+                font-size: 0.8rem;
+            }
+            .editable-risk-input, .result-card p:last-child {
+                font-size: 1rem; /* Smaller font for results */
+            }
+            .result-card {
+                padding: 0.75rem; /* Smaller padding for result cards */
+            }
+            .edit-btn, .copy-btn {
+                padding: 0.1rem 0.4rem;
+                font-size: 0.6rem;
+            }
+            .visual-trade-bar {
+                height: 1rem; /* Smaller visual bar */
+            }
+        }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4 bg-black">
+<body>
     <div class="w-full max-w-4xl mx-auto">
-        <div class="container-glow p-6 sm:p-8">
-            <div class="text-center mb-8">
-                <h1 class="text-3xl sm:text-4xl font-bold text-white tracking-tight">Price Calculator</h1>
-                <p class="text-neutral-400 mt-2">Smart & Stylish Risk Management Tool for Traders</p>
+        <div class="container-glow">
+            <div class="text-center mb-6">
+                <h1 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Price Calculator</h1>
+                <p class="text-neutral-400 mt-1 text-sm">Smart & Stylish Risk Management Tool for Traders</p>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <!-- Input Section -->
-                <div class="space-y-4">
+                <div class="space-y-3">
                     <!-- Scenario Management -->
-                    <div class="p-3 rounded-lg bg-white/5 space-y-3">
-                        <label class="block text-sm font-medium text-neutral-300">Scenarios</label>
+                    <div class="p-2 rounded-lg bg-white/5 space-y-2">
+                        <label class="block text-xs font-medium text-neutral-300">Scenarios</label>
                         <div class="flex gap-2">
-                            <select id="load-scenario-select" class="w-full p-2 rounded-md form-input text-sm">
+                            <select id="load-scenario-select" class="w-full p-2 rounded-md form-input text-xs">
                                 <option value="">Load a scenario...</option>
                             </select>
-                            <button id="delete-scenario-btn" class="p-2 rounded-md scenario-btn">Delete</button>
+                            <button id="delete-scenario-btn" class="p-2 rounded-md scenario-btn text-xs">Delete</button>
                         </div>
-                        <button id="save-scenario-btn" class="w-full p-2 rounded-md scenario-btn">Save Current as Scenario</button>
+                        <button id="save-scenario-btn" class="w-full p-2 rounded-md scenario-btn text-xs">Save Current as Scenario</button>
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-neutral-300 mb-2">Trade Direction</label>
+                        <label class="block text-xs font-medium text-neutral-300 mb-1">Trade Direction</label>
                         <div class="relative buy-sell-toggle">
                             <div class="slider buy"></div>
                             <button id="buy-btn" class="active">Buy</button>
@@ -132,47 +272,53 @@
                         </div>
                     </div>
                     <div>
-                        <label for="currency-pair" class="block text-sm font-medium text-neutral-300 mb-2">Currency Pair</label>
-                        <input type="text" id="currency-pair" placeholder="e.g., EUR/USD" class="w-full p-3 rounded-lg form-input uppercase">
+                        <label for="currency-pair" class="block text-xs font-medium text-neutral-300 mb-1">Currency Pair</label>
+                        <input type="text" id="currency-pair" placeholder="e.g., EUR/USD" class="w-full p-2 rounded-lg form-input uppercase text-xs" title="Enter the currency pair (e.g., EUR/USD, USD/JPY).">
                     </div>
                     <div>
-                        <label for="entry-price" class="block text-sm font-medium text-neutral-300 mb-2">Entry Price</label>
-                        <input type="number" step="any" id="entry-price" placeholder="e.g., 1.07500" class="w-full p-3 rounded-lg form-input">
+                        <label for="entry-price" class="block text-xs font-medium text-neutral-300 mb-1">Entry Price</label>
+                        <input type="number" step="any" id="entry-price" placeholder="e.g., 1.07500" class="w-full p-2 rounded-lg form-input text-xs" title="The price at which you plan to enter the trade.">
                     </div>
                     <div>
-                        <label for="account-size" class="block text-sm font-medium text-neutral-300 mb-2">Account Size (USD)</label>
-                        <input type="number" step="any" id="account-size" placeholder="e.g., 10000" class="w-full p-3 rounded-lg form-input">
+                        <label for="account-size" class="block text-xs font-medium text-neutral-300 mb-1">Account Size (USD)</label>
+                        <input type="number" step="any" id="account-size" placeholder="e.g., 10000" class="w-full p-2 rounded-lg form-input text-xs" title="Your total trading account balance in USD.">
                     </div>
-                    <div class="grid grid-cols-2 gap-4">
+                    <div class="grid grid-cols-2 gap-3">
                         <div>
-                            <label for="risk-percent" class="block text-sm font-medium text-neutral-300 mb-2">Risk (%)</label>
-                            <input type="number" step="any" id="risk-percent" value="1" class="w-full p-3 rounded-lg form-input">
+                            <label for="risk-percent" class="block text-xs font-medium text-neutral-300 mb-1">Risk (%)</label>
+                            <input type="number" step="any" id="risk-percent" value="1" class="w-full p-2 rounded-lg form-input text-xs" title="The percentage of your account you are willing to risk on this trade (e.g., 1 for 1%).">
                         </div>
                         <div>
-                            <label for="rr-ratio" class="block text-sm font-medium text-neutral-300 mb-2">R:R Ratio (1:X)</label>
-                            <input type="number" step="any" id="rr-ratio" value="3" class="w-full p-3 rounded-lg form-input">
+                            <label for="rr-ratio" class="block text-xs font-medium text-neutral-300 mb-1">R:R Ratio (1:X)</label>
+                            <input type="number" step="any" id="rr-ratio" value="3" class="w-full p-2 rounded-lg form-input text-xs" title="Your desired Risk-to-Reward ratio (e.g., 3 for 1:3).">
                         </div>
                     </div>
                     <div>
-                        <label for="stop-loss-pips" class="block text-sm font-medium text-neutral-300 mb-2">Stop Loss (Pips)</label>
-                        <input type="number" step="any" id="stop-loss-pips" placeholder="e.g., 20" class="w-full p-3 rounded-lg form-input">
+                        <label for="stop-loss-pips" class="block text-xs font-medium text-neutral-300 mb-1">Stop Loss (Pips)</label>
+                        <input type="number" step="any" id="stop-loss-pips" placeholder="e.g., 20" class="w-full p-2 rounded-lg form-input text-xs" title="The number of pips your stop loss will be from your entry price.">
                     </div>
-                    <button id="calculate-btn" class="w-full p-3 rounded-lg font-semibold text-white btn-glow !mt-8">Calculate</button>
+                    <button id="calculate-btn" class="w-full p-2 rounded-lg font-semibold text-white btn-glow !mt-6 text-sm">Calculate</button>
                     <p id="error-message" class="error-message text-center"></p>
                 </div>
 
                 <!-- Output Section -->
-                <div class="space-y-4">
+                <div class="space-y-3">
+                    <!-- Mock Price Chart -->
+                    <div id="price-chart-container" class="hidden p-3 rounded-lg bg-white/5">
+                        <p class="text-xs text-neutral-400 mb-2">Price Levels Visualization</p>
+                        <canvas id="price-chart-canvas"></canvas>
+                    </div>
+
                     <div id="visual-trade-bar-container" class="hidden">
-                        <p class="text-sm text-neutral-400 mb-2">Visual Risk/Reward</p>
+                        <p class="text-xs text-neutral-400 mb-1">Visual Risk/Reward</p>
                         <div id="visual-trade-bar" class="visual-trade-bar"></div>
                     </div>
-                    <div id="result-risk-amount-card" class="p-5 rounded-lg result-card hidden">
+                    <div id="result-risk-amount-card" class="p-3 rounded-lg result-card hidden">
                         <div class="flex justify-between items-start">
                             <div>
-                                <p class="text-sm text-neutral-400">Risk Amount (USD)</p>
+                                <p class="text-xs text-neutral-400">Risk Amount (USD)</p>
                                 <div class="flex items-center">
-                                    <span class="text-2xl font-bold text-yellow-400 mr-1">$</span>
+                                    <span class="text-xl font-bold text-yellow-400 mr-1">$</span>
                                     <input type="number" id="editable-risk-amount" class="editable-risk-input" disabled>
                                 </div>
                                 <p id="risk-feedback" class="text-xs text-neutral-500 h-4 mt-1"></p>
@@ -180,28 +326,41 @@
                             <button id="edit-risk-btn" class="edit-btn">Edit</button>
                         </div>
                     </div>
-                    <div id="result-pip-value" class="p-5 rounded-lg result-card hidden"><p class="text-sm text-neutral-400">Pip Value</p><p class="text-2xl font-bold text-white">-</p></div>
-                    <div id="result-lot-size" class="p-5 rounded-lg result-card hidden"><p class="text-sm text-neutral-400">Suggested Lot Size</p><p class="text-2xl font-bold text-white">-</p></div>
-                    <div id="result-stop-loss" class="p-5 rounded-lg result-card hidden">
+                    <div id="result-pip-value" class="p-3 rounded-lg result-card hidden"><p class="text-xs text-neutral-400">Pip Value</p><p class="text-xl font-bold text-white">-</p></div>
+                    <div id="result-lot-size" class="p-3 rounded-lg result-card hidden"><p class="text-xs text-neutral-400">Suggested Lot Size</p><p class="text-xl font-bold text-white">-</p></div>
+                    <div id="result-stop-loss" class="p-3 rounded-lg result-card hidden">
                         <div class="flex justify-between items-center">
-                            <div><p class="text-sm text-neutral-400">Stop Loss Price</p><p id="sl-price-value" class="text-2xl font-bold text-red-400">-</p></div>
+                            <div><p class="text-xs text-neutral-400">Stop Loss Price</p><p id="sl-price-value" class="text-xl font-bold text-red-400">-</p></div>
                             <button class="copy-btn" data-copy-target="sl-price-value"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/><path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/></svg></button>
                         </div>
                     </div>
-                    <div id="result-take-profit" class="p-5 rounded-lg result-card hidden">
+                    <div id="result-take-profit" class="p-3 rounded-lg result-card hidden">
                         <div class="flex justify-between items-center">
-                            <div><p class="text-sm text-neutral-400">Take Profit Price</p><p id="tp-price-value" class="text-2xl font-bold text-green-400">-</p></div>
-                             <button class="copy-btn" data-copy-target="tp-price-value"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/><path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/></svg></button>
+                            <div><p class="text-xs text-neutral-400">Take Profit Price</p><p id="tp-price-value" class="text-xl font-bold text-green-400">-</p></div>
+                            <button class="copy-btn" data-copy-target="tp-price-value"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/><path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/></svg></button>
                         </div>
                     </div>
-                     <div id="result-breakeven" class="p-5 rounded-lg result-card hidden">
+                    <div id="result-breakeven" class="p-3 rounded-lg result-card hidden">
                         <div class="flex justify-between items-center">
-                            <div><p class="text-sm text-neutral-400">Breakeven Price (est. 1 pip spread)</p><p id="be-price-value" class="text-2xl font-bold text-blue-400">-</p></div>
-                             <button class="copy-btn" data-copy-target="be-price-value"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/><path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/></svg></button>
+                            <div><p class="text-xs text-neutral-400">Breakeven Price (est. 1 pip spread)</p><p id="be-price-value" class="text-xl font-bold text-blue-400">-</p></div>
+                            <button class="copy-btn" data-copy-target="be-price-value"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/><path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/></svg></button>
                         </div>
                     </div>
-                    <div id="result-expected-profit" class="p-5 rounded-lg result-card hidden"><p class="text-sm text-neutral-400">Expected Profit</p><p class="text-2xl font-bold text-green-400">-</p></div>
+                    <div id="result-expected-profit" class="p-3 rounded-lg result-card hidden"><p class="text-xs text-neutral-400">Expected Profit</p><p class="text-xl font-bold text-green-400">-</p></div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Modal for Alerts/Confirms -->
+    <div id="custom-modal-overlay" class="modal-overlay">
+        <div class="modal-content">
+            <p id="modal-message" class="text-white text-lg"></p>
+            <input type="text" id="modal-input" class="modal-input hidden" placeholder="Enter scenario name...">
+            <div class="modal-buttons">
+                <button id="modal-confirm-btn" class="modal-btn primary hidden">Confirm</button>
+                <button id="modal-cancel-btn" class="modal-btn secondary hidden">Cancel</button>
+                <button id="modal-ok-btn" class="modal-btn primary hidden">OK</button>
             </div>
         </div>
     </div>
@@ -239,7 +398,21 @@
             const loadScenarioSelect = document.getElementById('load-scenario-select');
             const deleteScenarioBtn = document.getElementById('delete-scenario-btn');
 
+            // Chart elements
+            const priceChartContainer = document.getElementById('price-chart-container');
+            const priceChartCanvas = document.getElementById('price-chart-canvas');
+            const ctx = priceChartCanvas.getContext('2d');
+
+            // Modal elements
+            const customModalOverlay = document.getElementById('custom-modal-overlay');
+            const modalMessage = document.getElementById('modal-message');
+            const modalInput = document.getElementById('modal-input');
+            const modalConfirmBtn = document.getElementById('modal-confirm-btn');
+            const modalCancelBtn = document.getElementById('modal-cancel-btn');
+            const modalOkBtn = document.getElementById('modal-ok-btn');
+
             let tradeDirection = 'buy';
+            let modalResolve; // To store the resolve function for modal promises
 
             // --- Event Listeners ---
             buyBtn.addEventListener('click', () => setTradeDirection('buy'));
@@ -252,8 +425,69 @@
             loadScenarioSelect.addEventListener('change', loadSelectedScenario);
             deleteScenarioBtn.addEventListener('click', deleteSelectedScenario);
             
+            // Adjust canvas size on window resize
+            window.addEventListener('resize', resizeCanvas);
+
             // --- Initial Setup ---
             loadScenariosIntoSelect();
+            resizeCanvas(); // Set initial canvas size
+
+            // --- Modal Functions ---
+            function showModal(message, type = 'alert', inputPlaceholder = '') {
+                return new Promise(resolve => {
+                    modalResolve = resolve;
+                    modalMessage.textContent = message;
+                    modalInput.classList.add('hidden');
+                    modalConfirmBtn.classList.add('hidden');
+                    modalCancelBtn.classList.add('hidden');
+                    modalOkBtn.classList.add('hidden');
+
+                    if (type === 'prompt') {
+                        modalInput.classList.remove('hidden');
+                        modalInput.value = '';
+                        modalInput.placeholder = inputPlaceholder;
+                        modalConfirmBtn.classList.remove('hidden');
+                        modalCancelBtn.classList.remove('hidden');
+                    } else if (type === 'confirm') {
+                        modalConfirmBtn.classList.remove('hidden');
+                        modalCancelBtn.classList.remove('hidden');
+                    } else { // 'alert'
+                        modalOkBtn.classList.remove('hidden');
+                    }
+                    customModalOverlay.classList.add('show');
+                });
+            }
+
+            function hideModal() {
+                customModalOverlay.classList.remove('show');
+            }
+
+            modalOkBtn.addEventListener('click', () => {
+                hideModal();
+                if (modalResolve) modalResolve(true);
+            });
+
+            modalConfirmBtn.addEventListener('click', () => {
+                hideModal();
+                if (modalResolve) {
+                    if (!modalInput.classList.contains('hidden')) {
+                        modalResolve(modalInput.value);
+                    } else {
+                        modalResolve(true);
+                    }
+                }
+            });
+
+            modalCancelBtn.addEventListener('click', () => {
+                hideModal();
+                if (modalResolve) {
+                    if (!modalInput.classList.contains('hidden')) {
+                        modalResolve(null); // For prompt, return null on cancel
+                    } else {
+                        modalResolve(false); // For confirm, return false on cancel
+                    }
+                }
+            });
 
             // --- Core Functions ---
             function setTradeDirection(direction) {
@@ -285,10 +519,32 @@
                     currencyPair: currencyPairInput.value.toUpperCase()
                 };
 
-                if (Object.values(inputs).some(v => !v) || inputs.entryPrice <= 0 || inputs.accountSize <= 0 || inputs.riskPercent <= 0 || inputs.rrRatio <= 0 || inputs.stopLossPips <= 0 || inputs.currencyPair.length < 6) {
-                    showError('Please fill all fields with valid positive numbers.');
+                // Specific error messages
+                if (isNaN(inputs.entryPrice) || inputs.entryPrice <= 0) {
+                    showError('Please enter a valid positive Entry Price.');
                     return null;
                 }
+                if (isNaN(inputs.accountSize) || inputs.accountSize <= 0) {
+                    showError('Please enter a valid positive Account Size.');
+                    return null;
+                }
+                if (isNaN(inputs.riskPercent) || inputs.riskPercent <= 0) {
+                    showError('Please enter a valid positive Risk Percentage.');
+                    return null;
+                }
+                if (isNaN(inputs.rrRatio) || inputs.rrRatio <= 0) {
+                    showError('Please enter a valid positive R:R Ratio.');
+                    return null;
+                }
+                if (isNaN(inputs.stopLossPips) || inputs.stopLossPips <= 0) {
+                    showError('Please enter a valid positive Stop Loss (Pips).');
+                    return null;
+                }
+                if (inputs.currencyPair.length < 6) {
+                    showError('Please enter a valid Currency Pair (e.g., EUR/USD).');
+                    return null;
+                }
+                
                 return inputs;
             }
 
@@ -296,12 +552,22 @@
                 const riskAmount = riskAmountOverride ?? inputs.accountSize * (inputs.riskPercent / 100);
                 const isJpyPair = inputs.currencyPair.includes('JPY');
                 const pipDecimal = isJpyPair ? 0.01 : 0.0001;
-                const pipValueUsd = 10 / (isJpyPair ? 100 : 1);
                 
-                const lotSize = riskAmount / (inputs.stopLossPips * pipValueUsd);
-                const pipValueForLot = lotSize * pipValueUsd;
+                let valuePerPipStandardLot;
+                if (inputs.currencyPair.endsWith('USD')) {
+                    valuePerPipStandardLot = 10;
+                } else if (inputs.currencyPair.includes('JPY')) {
+                    valuePerPipStandardLot = (0.01 / inputs.entryPrice) * 100000;
+                } else if (inputs.currencyPair.startsWith('USD')) {
+                    valuePerPipStandardLot = 10;
+                } else {
+                    valuePerPipStandardLot = 10;
+                }
 
-                const slPrice = tradeDirection === 'buy' 
+                const pipValuePerCalculatedLot = riskAmount / inputs.stopLossPips;
+                const lotSize = pipValuePerCalculatedLot / valuePerPipStandardLot;
+
+                const slPrice = tradeDirection === 'buy'
                     ? inputs.entryPrice - (inputs.stopLossPips * pipDecimal)
                     : inputs.entryPrice + (inputs.stopLossPips * pipDecimal);
 
@@ -310,7 +576,7 @@
                     ? inputs.entryPrice + (takeProfitPips * pipDecimal)
                     : inputs.entryPrice - (takeProfitPips * pipDecimal);
                 
-                const spreadPips = 1.0; // Assumed spread for BE calculation
+                const spreadPips = 1.0;
                 const bePrice = tradeDirection === 'buy'
                     ? inputs.entryPrice + (spreadPips * pipDecimal)
                     : inputs.entryPrice - (spreadPips * pipDecimal);
@@ -318,14 +584,16 @@
                 const expectedProfit = riskAmount * inputs.rrRatio;
 
                 return {
+                    entryPrice: inputs.entryPrice, // Keep entry price for chart
                     riskAmount: riskAmount.toFixed(2),
                     lotSize: lotSize.toFixed(2),
-                    pipValue: pipValueForLot.toFixed(2),
+                    pipValue: pipValuePerCalculatedLot.toFixed(2),
                     stopLossPrice: slPrice.toFixed(isJpyPair ? 3 : 5),
                     takeProfitPrice: tpPrice.toFixed(isJpyPair ? 3 : 5),
                     breakevenPrice: bePrice.toFixed(isJpyPair ? 3 : 5),
                     expectedProfit: expectedProfit.toFixed(2),
-                    rrRatio: inputs.rrRatio
+                    rrRatio: inputs.rrRatio,
+                    tradeDirection: tradeDirection // Pass trade direction to results
                 };
             }
 
@@ -339,10 +607,112 @@
                 resultExpectedProfitCard.querySelector('p:last-child').textContent = `$${data.expectedProfit}`;
                 
                 updateVisualBar(data.rrRatio);
+                drawPriceChart(data); // Draw the chart
 
-                [visualTradeBarContainer, resultRiskAmountCard, resultPipValueCard, resultLotSizeCard, resultStopLossCard, resultTakeProfitCard, resultBreakevenCard, resultExpectedProfitCard]
+                [priceChartContainer, visualTradeBarContainer, resultRiskAmountCard, resultPipValueCard, resultLotSizeCard, resultStopLossCard, resultTakeProfitCard, resultBreakevenCard, resultExpectedProfitCard]
                     .forEach(card => card.classList.remove('hidden'));
             }
+
+            // --- Chart Drawing Functions ---
+            function resizeCanvas() {
+                // Set canvas display size to match its CSS size
+                priceChartCanvas.width = priceChartCanvas.offsetWidth;
+                priceChartCanvas.height = priceChartCanvas.offsetHeight;
+                // Redraw if data exists
+                const inputs = getAndValidateInputs();
+                if (inputs && editableRiskAmountInput.value) { // Check if results are displayed
+                    const calculations = performCalculations(inputs);
+                    drawPriceChart(calculations);
+                }
+            }
+
+            function drawPriceChart(data) {
+                ctx.clearRect(0, 0, priceChartCanvas.width, priceChartCanvas.height); // Clear canvas
+
+                const padding = 20;
+                const chartWidth = priceChartCanvas.width - 2 * padding;
+                const chartHeight = priceChartCanvas.height - 2 * padding;
+
+                const prices = [
+                    parseFloat(data.entryPrice),
+                    parseFloat(data.stopLossPrice),
+                    parseFloat(data.takeProfitPrice)
+                ];
+                
+                // Include breakeven price in min/max for scaling
+                const breakevenPrice = parseFloat(data.breakevenPrice);
+                if (!isNaN(breakevenPrice)) {
+                    prices.push(breakevenPrice);
+                }
+
+                const minPrice = Math.min(...prices);
+                const maxPrice = Math.max(...prices);
+                const priceRange = maxPrice - minPrice;
+
+                // If priceRange is zero (all prices are the same), give it a small range for visualization
+                const effectivePriceRange = priceRange === 0 ? 0.0002 : priceRange; // Small increment for flat lines
+
+                // Function to convert price to Y-coordinate
+                const priceToY = (price) => {
+                    // Normalize price to 0-1 range, then scale to chart height
+                    // Invert Y-axis so higher prices are higher on the chart
+                    if (data.tradeDirection === 'buy') {
+                        return padding + chartHeight - ((price - minPrice) / effectivePriceRange) * chartHeight;
+                    } else { // For sell, we want higher price (SL) to be higher, lower price (TP) to be lower
+                        return padding + ((price - minPrice) / effectivePriceRange) * chartHeight;
+                    }
+                };
+
+                // Draw lines
+                // Entry Price
+                ctx.beginPath();
+                ctx.strokeStyle = '#facc15'; // Yellow
+                ctx.lineWidth = 2;
+                const entryY = priceToY(parseFloat(data.entryPrice));
+                ctx.moveTo(padding, entryY);
+                ctx.lineTo(padding + chartWidth, entryY);
+                ctx.stroke();
+                ctx.fillStyle = '#facc15';
+                ctx.fillText(`Entry: ${data.entryPrice}`, padding + 5, entryY - 5);
+
+                // Stop Loss Price
+                ctx.beginPath();
+                ctx.strokeStyle = '#ef4444'; // Red
+                ctx.lineWidth = 2;
+                const slY = priceToY(parseFloat(data.stopLossPrice));
+                ctx.moveTo(padding, slY);
+                ctx.lineTo(padding + chartWidth, slY);
+                ctx.stroke();
+                ctx.fillStyle = '#ef4444';
+                ctx.fillText(`SL: ${data.stopLossPrice}`, padding + 5, slY - 5);
+
+                // Take Profit Price
+                ctx.beginPath();
+                ctx.strokeStyle = '#22c55e'; // Green
+                ctx.lineWidth = 2;
+                const tpY = priceToY(parseFloat(data.takeProfitPrice));
+                ctx.moveTo(padding, tpY);
+                ctx.lineTo(padding + chartWidth, tpY);
+                ctx.stroke();
+                ctx.fillStyle = '#22c55e';
+                ctx.fillText(`TP: ${data.takeProfitPrice}`, padding + 5, tpY - 5);
+
+                // Breakeven Price
+                if (!isNaN(breakevenPrice)) {
+                    ctx.beginPath();
+                    ctx.strokeStyle = '#60a5fa'; // Blue
+                    ctx.lineWidth = 1;
+                    ctx.setLineDash([5, 5]); // Dashed line
+                    const beY = priceToY(breakevenPrice);
+                    ctx.moveTo(padding, beY);
+                    ctx.lineTo(padding + chartWidth, beY);
+                    ctx.stroke();
+                    ctx.setLineDash([]); // Reset line dash
+                    ctx.fillStyle = '#60a5fa';
+                    ctx.fillText(`BE: ${data.breakevenPrice}`, padding + 5, beY - 5);
+                }
+            }
+
 
             // --- UI Interaction Helpers ---
             function enableRiskEditing() {
@@ -354,7 +724,10 @@
             function handleRiskAmountChange() {
                 const newRiskAmount = parseFloat(editableRiskAmountInput.value);
                 const inputs = getAndValidateInputs();
-                if (!inputs || isNaN(newRiskAmount) || newRiskAmount <= 0) return;
+                if (!inputs || isNaN(newRiskAmount) || newRiskAmount <= 0) {
+                    riskFeedback.textContent = 'Invalid risk amount.';
+                    return;
+                }
                 
                 const newRiskPercent = (newRiskAmount / inputs.accountSize) * 100;
                 riskPercentInput.value = newRiskPercent.toFixed(2);
@@ -364,6 +737,7 @@
                 resultLotSizeCard.querySelector('p:last-child').textContent = calcs.lotSize;
                 resultExpectedProfitCard.querySelector('p:last-child').textContent = `$${calcs.expectedProfit}`;
                 resultPipValueCard.querySelector('p:last-child').textContent = `$${calcs.pipValue} per pip`;
+                drawPriceChart(calcs); // Redraw chart on risk amount change
             }
 
             function updateVisualBar(rrRatio) {
@@ -409,14 +783,17 @@
             function clearError() { errorMessage.textContent = ''; }
 
             function hideResults() {
-                [visualTradeBarContainer, resultRiskAmountCard, resultPipValueCard, resultLotSizeCard, resultStopLossCard, resultTakeProfitCard, resultBreakevenCard, resultExpectedProfitCard]
+                [priceChartContainer, visualTradeBarContainer, resultRiskAmountCard, resultPipValueCard, resultLotSizeCard, resultStopLossCard, resultTakeProfitCard, resultBreakevenCard, resultExpectedProfitCard]
                     .forEach(card => card.classList.add('hidden'));
             }
 
             // --- LocalStorage Scenario Functions ---
-            function saveScenario() {
-                const scenarioName = prompt("Enter a name for this scenario:");
-                if (!scenarioName) return;
+            async function saveScenario() {
+                const scenarioName = await showModal("Enter a name for this scenario:", 'prompt', 'Scenario Name');
+                if (!scenarioName) {
+                    await showModal("Scenario save cancelled.", 'alert');
+                    return;
+                }
 
                 const scenarios = JSON.parse(localStorage.getItem('forexCalcScenarios') || '{}');
                 scenarios[scenarioName] = {
@@ -425,11 +802,12 @@
                     accountSize: accountSizeInput.value,
                     riskPercent: riskPercentInput.value,
                     rrRatio: rrRatioInput.value,
-                    stopLossPips: stopLossPipsInput.value
+                    stopLossPips: stopLossPipsInput.value,
+                    tradeDirection: tradeDirection
                 };
                 localStorage.setItem('forexCalcScenarios', JSON.stringify(scenarios));
                 loadScenariosIntoSelect();
-                alert(`Scenario "${scenarioName}" saved!`);
+                await showModal(`Scenario "${scenarioName}" saved!`, 'alert');
             }
 
             function loadScenariosIntoSelect() {
@@ -456,21 +834,23 @@
                     riskPercentInput.value = data.riskPercent || '1';
                     rrRatioInput.value = data.rrRatio || '3';
                     stopLossPipsInput.value = data.stopLossPips || '';
+                    setTradeDirection(data.tradeDirection || 'buy');
                 }
             }
 
-            function deleteSelectedScenario() {
+            async function deleteSelectedScenario() {
                 const scenarioName = loadScenarioSelect.value;
                 if (!scenarioName) {
-                    alert('Please select a scenario to delete.');
+                    await showModal('Please select a scenario to delete.', 'alert');
                     return;
                 }
-                if (confirm(`Are you sure you want to delete the "${scenarioName}" scenario?`)) {
+                const confirmed = await showModal(`Are you sure you want to delete the "${scenarioName}" scenario?`, 'confirm');
+                if (confirmed) {
                     const scenarios = JSON.parse(localStorage.getItem('forexCalcScenarios') || '{}');
                     delete scenarios[scenarioName];
                     localStorage.setItem('forexCalcScenarios', JSON.stringify(scenarios));
                     loadScenariosIntoSelect();
-                    alert(`Scenario "${scenarioName}" deleted.`);
+                    await showModal(`Scenario "${scenarioName}" deleted.`, 'alert');
                 }
             }
         });
